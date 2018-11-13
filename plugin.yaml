@@ -1,0 +1,21 @@
+build:
+  define_macros: []
+  extra_compile_args: []
+  include_dirs: []
+  libraries:
+  - bmif
+  library_dirs: []
+  undef_macros: []
+info:
+  github_username: mdpiper
+  plugin_author: Mark Piper
+  plugin_license: MIT
+  summary: PyMT plugin for heatf
+library:
+  entry_point:
+  - Heat=bmiheatf:bmi_heat
+  language: fortran
+  register: ''
+plugin:
+  name: heatf
+  requirements: []
