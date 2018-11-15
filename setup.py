@@ -80,7 +80,7 @@ cmdclass["build_ext"] = build_ext
 
 setup(
     name="pymt_heatf",
-    author="Eric Hutton",
+    author="Mark Piper",
     description="PyMT plugin for heatf",
     version=versioneer.get_version(),
     setup_requires=["cython"],
