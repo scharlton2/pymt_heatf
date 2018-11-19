@@ -20,7 +20,6 @@ requirements:
     - cython
     - numpy 1.11.*
     - model_metadata
-
   run:
     - python
     - {{ pin_compatible('numpy') }}
@@ -31,13 +30,13 @@ test:
     - model_metadata
   imports:
     - pymt_heatf
-  commands:  # TODO
-    - config_file=$(mmd-stage bmi_heat . > MANIFEST && mmd-query bmi_heat --var=run.config_file.path)
-    - bmi-test pymt_heatf.bmi:bmi_heat --infile=$config_file --manifest=MANIFEST -v
+  commands:
+    - config_file=$(mmd-stage Heat . > MANIFEST && mmd-query Heat --var=run.config_file.path)
+    - bmi-test pymt_heatf.bmi:Heat --config-file=$config_file --manifest=MANIFEST --bmi-version=1.0 -v
 
 about:
   summary: Python package that wraps the heatf BMI.
-  home: https://github.com/mcflugen/pymt_heatf
+  home: https://github.com/mdpiper/pymt_heatf
   license: MIT license
   license_file: LICENSE
-  dev_url: https://github.com/mcflugen/pymt_heatf
+  dev_url: https://github.com/mdpiper/pymt_heatf
