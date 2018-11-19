@@ -424,3 +424,4 @@ cdef class Heat:
                                                  len(var_name),
                                                  buffer.data,
                                                  grid_size))
+        return buffer
