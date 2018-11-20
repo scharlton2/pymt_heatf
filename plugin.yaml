@@ -18,4 +18,5 @@ library:
   register: ''
 plugin:
   name: heatf
-  requirements: []
+  requirements:
+  - bmi-fortran
