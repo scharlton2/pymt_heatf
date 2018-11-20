@@ -52,13 +52,16 @@ pymt_components = [(
     ),
 ]
 
+
 def build_interoperability():
     compiler = new_fcompiler()
     compiler.customize()
     compiler.add_include_dir(os.path.join(sys.prefix, 'lib'))
 
-    cmd = compiler.compiler_f90
+    cmd = []
+    cmd.append(compiler.compiler_f90[0])
     cmd.append(compiler.compile_switch)
+    cmd.append('-fPIC')
     for include_dir in compiler.include_dirs:
         cmd.append('-I{}'.format(include_dir))
     cmd.append('bmi_interoperability.f90')
@@ -68,12 +71,14 @@ def build_interoperability():
     except subprocess.CalledProcessError:
         raise
 
+
 class build_ext(_build_ext):
 
     def run(self):
         with cd('pymt_heatf/lib'):
             build_interoperability()
         _build_ext.run(self)
+
 
 cmdclass = get_cmdclass(pymt_components, cmdclass=versioneer.get_cmdclass())
 cmdclass["build_ext"] = build_ext
