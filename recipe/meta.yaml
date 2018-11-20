@@ -14,15 +14,18 @@ build:
 requirements:
   build:
     - {{ compiler('c') }}
+    - {{ compiler('fortran') }}
   host:
     - python
     - pip
     - cython
     - numpy 1.11.*
     - model_metadata
+    - bmi-fortran
   run:
     - python
     - {{ pin_compatible('numpy') }}
+    - bmi-fortran
 
 test:
   requires:
