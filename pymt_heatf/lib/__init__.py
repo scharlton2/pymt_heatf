@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 
-from .heat import Heatf
+from .heatf import Heatf
 
 __all__ = [
     "Heatf",
