@@ -51,11 +51,11 @@ cdef extern from "bmi_interoperability.h":
     int bmi_get_grid_rank(int model, int grid_id, int *rank)
     int bmi_get_grid_shape(int model, int grid_id, int *shape, int rank)
     int bmi_get_grid_size(int model, int grid_id, int *size)
-    int bmi_get_grid_spacing(int model, int grid_id, float *spacing, int rank)
-    int bmi_get_grid_origin(int model, int grid_id, float *origin, int rank)
-    int bmi_get_grid_x(int model, int grid_id, float *x, int size)
-    int bmi_get_grid_y(int model, int grid_id, float *y, int size)
-    int bmi_get_grid_z(int model, int grid_id, float *z, int size)
+    int bmi_get_grid_spacing(int model, int grid_id, double *spacing, int rank)
+    int bmi_get_grid_origin(int model, int grid_id, double *origin, int rank)
+    int bmi_get_grid_x(int model, int grid_id, double *x, int size)
+    int bmi_get_grid_y(int model, int grid_id, double *y, int size)
+    int bmi_get_grid_z(int model, int grid_id, double *z, int size)
     int bmi_get_grid_connectivity(int model, int grid_id, int *conn, int size)
     int bmi_get_grid_offset(int model, int grid_id, int *offset, int size)
 
@@ -75,8 +75,8 @@ cdef extern from "bmi_interoperability.h":
     int bmi_get_value_double(int model, const char *var_name, int n_chars,
                              void *buffer, int size)
 
-    int bmi_get_value_ref(int model, const char *var_name,
-                          int n_chars, void **ref)
+    int bmi_get_value_ptr(int model, const char *var_name,
+                          int n_chars, void **ptr)
 
     int bmi_set_value_int(int model, const char *var_name, int n_chars,
                           void *buffer, int size)
@@ -278,35 +278,35 @@ cdef class Heat:
         return shape
 
     cpdef np.ndarray get_grid_spacing(self, grid_id, \
-                                      np.ndarray[float, ndim=1] spacing):
+                                      np.ndarray[double, ndim=1] spacing):
         cdef int rank = self.get_grid_rank(grid_id)
         ok_or_raise(<int>bmi_get_grid_spacing(self._bmi, grid_id,
                                               &spacing[0], rank))
         return spacing
 
     cpdef np.ndarray get_grid_origin(self, grid_id, \
-                                     np.ndarray[float, ndim=1] origin):
+                                     np.ndarray[double, ndim=1] origin):
         cdef int rank = self.get_grid_rank(grid_id)
         ok_or_raise(<int>bmi_get_grid_origin(self._bmi, grid_id,
                                              &origin[0], rank))
         return origin
 
     cpdef np.ndarray get_grid_x(self, grid_id, \
-                                np.ndarray[float, ndim=1] grid_x):
+                                np.ndarray[double, ndim=1] grid_x):
         cdef int size = self.get_grid_size(grid_id)
         ok_or_raise(<int>bmi_get_grid_x(self._bmi, grid_id,
                                         &grid_x[0], size))
         return grid_x
 
     cpdef np.ndarray get_grid_y(self, grid_id, \
-                                np.ndarray[float, ndim=1] grid_y):
+                                np.ndarray[double, ndim=1] grid_y):
         cdef int size = self.get_grid_size(grid_id)
         ok_or_raise(<int>bmi_get_grid_y(self._bmi, grid_id,
                                         &grid_y[0], size))
         return grid_y
 
     cpdef np.ndarray get_grid_z(self, grid_id, \
-                                np.ndarray[float, ndim=1] grid_z):
+                                np.ndarray[double, ndim=1] grid_z):
         cdef int size = self.get_grid_size(grid_id)
         ok_or_raise(<int>bmi_get_grid_z(self._bmi, grid_id,
                                         &grid_z[0], size))
@@ -384,13 +384,13 @@ cdef class Heat:
 
         return buffer
 
-    cpdef np.ndarray get_value_ref(self, var_name):
+    cpdef np.ndarray get_value_ptr(self, var_name):
         cdef int grid_id = self.get_var_grid(var_name)
         cdef int grid_size = self.get_grid_size(grid_id)
         cdef void* ptr
         type = self.get_var_type(var_name)
 
-        ok_or_raise(<int>bmi_get_value_ref(self._bmi,
+        ok_or_raise(<int>bmi_get_value_ptr(self._bmi,
                                            to_bytes(var_name),
                                            len(var_name), &ptr))
 
