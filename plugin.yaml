@@ -13,7 +13,7 @@ info:
   summary: PyMT plugin for heatf
 library:
   entry_point:
-  - Heat=bmiheatf:bmi_heat
+  - Heatf=bmiheatf:bmi_heat
   language: fortran
   register: ''
 plugin:

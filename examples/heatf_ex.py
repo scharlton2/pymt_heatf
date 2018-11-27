@@ -1,7 +1,7 @@
 """An example of calling a Fortran BMI through Cython."""
 
 import numpy as np
-from pymt_heatf import Heat
+from pymt_heatf import Heatf
 
 
 config_file = 'test.cfg'
@@ -10,7 +10,7 @@ config_file = 'test.cfg'
 np.set_printoptions(formatter={'float': '{: 6.1f}'.format})
 
 # Instantiate a model and get its name.
-m = Heat()
+m = Heatf()
 print(m.get_component_name())
 
 # Initialize the model.
@@ -175,6 +175,6 @@ print(check)
 m.finalize()
 
 # Check that number of instances can't exceed N_MODELS=3.
-# a = Heat()
-# b = Heat()
-# c = Heat()  # should fail with index=-1
+# a = Heatf()
+# b = Heatf()
+# c = Heatf()  # should fail with index=-1

@@ -33,7 +33,7 @@ PyMT plugin for heatf
 ========= =======================================
 Component PyMT
 ========= =======================================
-Heat      `from pymt.components import Heat`
+Heatf      `from pymt.components import Heatf`
 ========= =======================================
 
 ---------------

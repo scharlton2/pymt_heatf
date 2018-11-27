@@ -37,8 +37,8 @@ libraries = [
 
 ext_modules = [
     Extension(
-        "pymt_heatf.lib.heat",
-        ["pymt_heatf/lib/heat.pyx"],
+        "pymt_heatf.lib.heatf",
+        ["pymt_heatf/lib/heatf.pyx"],
         libraries=libraries + ["bmiheatf"],
         extra_objects=['pymt_heatf/lib/bmi_interoperability.o'],
         **common_flags,
@@ -47,8 +47,8 @@ ext_modules = [
 
 packages = find_packages()
 pymt_components = [(
-        "Heat=pymt_heatf.bmi:Heat",
-        "meta/Heat",
+        "Heatf=pymt_heatf.bmi:Heatf",
+        "meta/Heatf",
     ),
 ]
 

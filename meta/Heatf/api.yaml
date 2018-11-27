@@ -1,4 +1,4 @@
 name: heatf
 language: fortran
 package: heatf
-class: Heat
+class: Heatf

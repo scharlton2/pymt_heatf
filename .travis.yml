@@ -39,4 +39,4 @@ install:
 script:
 - python setup.py develop
 - python -c 'import pymt_heatf'
-- bmi-test pymt_heatf.bmi:Heat -vvv
+- bmi-test pymt_heatf.bmi:Heatf -vvv --bmi-version=1.0

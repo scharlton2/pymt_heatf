@@ -2,8 +2,8 @@ from __future__ import absolute_import
 
 
 
-from .lib import Heat
+from .lib import Heatf
 
 __all__ = [
-    "Heat",
+    "Heatf",
 ]

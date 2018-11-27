@@ -1,9 +1,9 @@
 #! /usr/bin/env python
 
-from .bmi import (Heat,
+from .bmi import (Heatf,
 )
 
-__all__ = ["Heat",
+__all__ = ["Heatf",
 ]
 
 from ._version import get_versions

@@ -105,9 +105,9 @@ cpdef to_string(bytes):
         return bytes
 
 
-# start: heat.pyx
+# start: heatf.pyx
 
-cdef class Heat:
+cdef class Heatf:
 
     cdef int _bmi
     cdef char[2048] STR_BUFFER

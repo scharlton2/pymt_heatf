@@ -34,8 +34,8 @@ test:
   imports:
     - pymt_heatf
   commands:
-    - config_file=$(mmd-stage Heat . > MANIFEST && mmd-query Heat --var=run.config_file.path)
-    - bmi-test pymt_heatf.bmi:Heat --config-file=$config_file --manifest=MANIFEST --bmi-version=1.0 -v
+    - config_file=$(mmd-stage Heatf . > MANIFEST && mmd-query Heatf --var=run.config_file.path)
+    - bmi-test pymt_heatf.bmi:Heatf --config-file=$config_file --manifest=MANIFEST --bmi-version=1.0 -v
 
 about:
   summary: Python package that wraps the heatf BMI.
