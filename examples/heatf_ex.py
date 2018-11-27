@@ -83,7 +83,7 @@ print(check)
 
 # Get a reference to the temperature values and check that it updates.
 print(' - values (by ref, streamwise) at time {}:'.format(m.get_current_time()))
-ref = m.get_value_ref(var_name)
+ref = m.get_value_ptr(var_name)
 print(ref)
 m.update()
 print(' - values (by ref, streamwise) at time {}:'.format(m.get_current_time()))
