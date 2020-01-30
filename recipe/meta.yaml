@@ -21,11 +21,11 @@ requirements:
     - cython
     - numpy 1.11.*
     - model_metadata
-    - bmi-fortran
+    - bmi-fortran=2.0 
   run:
     - python
     - {{ pin_compatible('numpy') }}
-    - bmi-fortran
+    - bmi-fortran=2.0 
 
 test:
   requires:
@@ -35,7 +35,7 @@ test:
     - pymt_heatf
   commands:
     - config_file=$(mmd-stage Heatf . > MANIFEST && mmd-query Heatf --var=run.config_file.path)
-    - bmi-test pymt_heatf.bmi:Heatf --config-file=$config_file --manifest=MANIFEST --bmi-version=1.0 -v
+    - bmi-test pymt_heatf.bmi:Heatf --config-file=$config_file --manifest=MANIFEST -v
 
 about:
   summary: Python package that wraps the heatf BMI.

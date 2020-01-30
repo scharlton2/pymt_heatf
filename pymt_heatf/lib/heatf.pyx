@@ -1,3 +1,4 @@
+# cython: language_level=3
 import ctypes
 from libc.stdlib cimport malloc, free
 
@@ -9,14 +10,21 @@ SIZEOF_FLOAT = 8 * ctypes.sizeof(ctypes.c_float)
 SIZEOF_DOUBLE = 8 * ctypes.sizeof(ctypes.c_double)
 SIZEOF_INT = 8 * ctypes.sizeof(ctypes.c_int)
 
-DTYPE_F_TO_PY = {
-    'real': 'float{bits}'.format(bits=SIZEOF_FLOAT),
-    'real*4': 'float{bits}'.format(bits=SIZEOF_FLOAT),
-    'double precision': 'float{bits}'.format(bits=SIZEOF_DOUBLE),
-    'real*8': 'float{bits}'.format(bits=SIZEOF_DOUBLE),
-    'integer': 'int{bits}'.format(bits=SIZEOF_INT),
-}
+DTYPE_FLOAT = 'float{bits}'.format(bits=SIZEOF_FLOAT)
+DTYPE_DOUBLE = 'float{bits}'.format(bits=SIZEOF_DOUBLE)
+DTYPE_INT = 'int{bits}'.format(bits=SIZEOF_INT)
 
+DTYPE_F_TO_PY = {
+    'real': DTYPE_FLOAT,
+    'real*4': DTYPE_FLOAT,
+    'double precision': DTYPE_DOUBLE,
+    'real*8': DTYPE_DOUBLE,
+    'integer': DTYPE_INT,
+}
+for k in list(DTYPE_F_TO_PY.keys()):
+    DTYPE_F_TO_PY[k.upper()] = DTYPE_F_TO_PY[k]
+
+ENOMSG = 42  # No message of desired type
 
 cdef extern from "bmi_interoperability.h":
     int MAX_COMPONENT_NAME
@@ -29,7 +37,6 @@ cdef extern from "bmi_interoperability.h":
     int bmi_initialize(int model, const char *config_file, int n_chars)
     int bmi_update(int model)
     int bmi_update_until(int model, double until)
-    int bmi_update_frac(int model, double frac)
     int bmi_finalize(int model)
 
     int bmi_get_component_name(int model, char *name, int n_chars)
@@ -56,8 +63,6 @@ cdef extern from "bmi_interoperability.h":
     int bmi_get_grid_x(int model, int grid_id, double *x, int size)
     int bmi_get_grid_y(int model, int grid_id, double *y, int size)
     int bmi_get_grid_z(int model, int grid_id, double *z, int size)
-    int bmi_get_grid_connectivity(int model, int grid_id, int *conn, int size)
-    int bmi_get_grid_offset(int model, int grid_id, int *offset, int size)
 
     int bmi_get_var_type(int model, const char *var_name, int n_chars,
                          char *type, int m_chars)
@@ -238,10 +243,6 @@ cdef class Heatf:
         status = <int>bmi_update(self._bmi)
         ok_or_raise(status)
 
-    cpdef update_frac(self, time_frac):
-        status = <int>bmi_update_frac(self._bmi, time_frac)
-        ok_or_raise(status)
-
     cpdef update_until(self, time_later):
         status = <int>bmi_update_until(self._bmi, time_later)
         ok_or_raise(status)
@@ -312,20 +313,6 @@ cdef class Heatf:
                                         &grid_z[0], size))
         return grid_z
 
-    cpdef np.ndarray get_grid_connectivity(self, grid_id, \
-                                           np.ndarray[int, ndim=1] conn):
-        cdef int size = self.get_grid_size(grid_id)
-        ok_or_raise(<int>bmi_get_grid_connectivity(self._bmi, grid_id,
-                                                   &conn[0], size))
-        return conn
-
-    cpdef np.ndarray get_grid_offset(self, grid_id, 
-                                     np.ndarray[int, ndim=1] offset):
-        cdef int size = self.get_grid_size(grid_id)
-        ok_or_raise(<int>bmi_get_grid_offset(self._bmi, grid_id,
-                                             &offset[0], size))
-        return offset
-
     cpdef object get_var_type(self, var_name):
         self.reset_str_buffer()
         ok_or_raise(<int>bmi_get_var_type(self._bmi,
@@ -363,24 +350,26 @@ cdef class Heatf:
         cdef int grid_size = self.get_grid_size(grid_id)
         type = self.get_var_type(var_name)
 
-        if type.startswith('double'):
+        if type == DTYPE_DOUBLE:
             ok_or_raise(<int>bmi_get_value_double(self._bmi,
                                                   to_bytes(var_name),
                                                   len(var_name),
                                                   buffer.data,
                                                   grid_size))
-        elif type.startswith('int'):
+        elif type == DTYPE_INT:
             ok_or_raise(<int>bmi_get_value_int(self._bmi,
                                                to_bytes(var_name),
                                                len(var_name),
                                                buffer.data,
                                                grid_size))
-        else:
+        elif type == DTYPE_FLOAT:
             ok_or_raise(<int>bmi_get_value_float(self._bmi,
                                                  to_bytes(var_name),
                                                  len(var_name),
                                                  buffer.data,
                                                  grid_size))
+        else:
+            ok_or_raise(ENOMSG)
 
         return buffer
 
@@ -394,34 +383,39 @@ cdef class Heatf:
                                            to_bytes(var_name),
                                            len(var_name), &ptr))
 
-        if type.startswith('double'):
+        if type == DTYPE_DOUBLE:
             return np.asarray(<np.float64_t[:grid_size]>ptr)
-        elif type.startswith('int'):
+        elif type == DTYPE_INT:
             return np.asarray(<np.int32_t[:grid_size]>ptr)
-        else:
+        elif type == DTYPE_FLOAT:
             return np.asarray(<np.float32_t[:grid_size]>ptr)
+        else:
+            return ok_or_raise(ENOMSG)
 
     cpdef set_value(self, var_name, np.ndarray buffer):
         cdef int grid_id = self.get_var_grid(var_name)
         cdef int grid_size = self.get_grid_size(grid_id)
         type = self.get_var_type(var_name)
 
-        if type.startswith('double'):
+        if type == DTYPE_DOUBLE:
             ok_or_raise(<int>bmi_set_value_double(self._bmi,
                                                   to_bytes(var_name),
                                                   len(var_name),
                                                   buffer.data,
                                                   grid_size))
-        elif type.startswith('int'):
+        elif type == DTYPE_INT:
             ok_or_raise(<int>bmi_set_value_int(self._bmi,
                                                to_bytes(var_name),
                                                len(var_name),
                                                buffer.data,
                                                grid_size))
-        else:
+        elif type == DTYPE_FLOAT:
             ok_or_raise(<int>bmi_set_value_float(self._bmi,
                                                  to_bytes(var_name),
                                                  len(var_name),
                                                  buffer.data,
                                                  grid_size))
+        else:
+            ok_or_raise(ENOMSG)
+
         return buffer

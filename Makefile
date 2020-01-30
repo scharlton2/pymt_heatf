@@ -58,7 +58,7 @@ pretty:
 	black setup.py pymt_heatf
 
 test: ## run tests quickly with the default Python
-	bmi-test pymt_heatf.bmi:Heatf -vvv --bmi-version=1.0
+	bmi-test pymt_heatf.bmi:Heatf -vvv
 
 test-all: ## run tests on every Python version with tox
 	tox

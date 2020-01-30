@@ -4,7 +4,7 @@ pymt_heatf
 
 
 .. image:: https://img.shields.io/badge/CSDMS-Basic%20Model%20Interface-green.svg
-        :target: https://bmi-forum.readthedocs.io/
+        :target: https://bmi.readthedocs.io/
         :alt: Basic Model Interface
 
 .. image:: https://img.shields.io/badge/recipe-pymt_heatf-green.svg
@@ -30,11 +30,12 @@ PyMT plugin for heatf
 
 
 
-========= =======================================
+
+========= ===================================
 Component PyMT
-========= =======================================
-Heatf      `from pymt.components import Heatf`
-========= =======================================
+========= ===================================
+Heatf     `from pymt.models import Heatf`
+========= ===================================
 
 ---------------
 Installing pymt
@@ -71,7 +72,12 @@ It is possible to list all of the versions of `pymt` available on your platform 
 Installing pymt_heatf
 ---------------------
 
+Once `pymt` is installed, the dependencies of `pymt_heatf` can
+be installed with:
 
+.. code::
+
+  conda install bmi-fortran=2.0
 
 To install `pymt_heatf`,
 
