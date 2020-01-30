@@ -1,7 +1,7 @@
 """An example of operating a Fortran model in PyMT."""
 
 import numpy as np
-from pymt.components import Heatf
+from pymt.models import Heatf
 
 
 config_file = 'test.cfg'
@@ -29,10 +29,6 @@ print('Time units:', m.get_time_units())
 # Advance the model by one time step.
 m.update()
 print('Update; current time:', m.get_current_time())
-
-# Advance the model by a fractional time step. Not in PyMT?
-# m.update_frac(0.75)
-# print('Update; current time:', m.get_current_time())
 
 # Advance the model until a later time.
 m.update_until(10.0)
@@ -96,8 +92,6 @@ print(' - size:', m.get_grid_size(grid_id))
 print(' - x:', m.get_grid_x(grid_id))
 print(' - y:', m.get_grid_y(grid_id))
 print(' - z:', m.get_grid_z(grid_id))
-# print(' - connectivity:', m.get_grid_connectivity(grid_id))
-# print(' - offset:', m.get_grid_offset(grid_id))
 print(' - variable type:', m.get_var_type(var_name))
 print(' - units:', m.get_var_units(var_name))
 print(' - itemsize:', m.get_var_itemsize(var_name))
@@ -122,8 +116,6 @@ print(' - size:', m.get_grid_size(grid_id))
 print(' - x:', m.get_grid_x(grid_id))
 print(' - y:', m.get_grid_y(grid_id))
 print(' - z:', m.get_grid_z(grid_id))
-# print(' - connectivity:', m.get_grid_connectivity(grid_id))
-# print(' - offset:', m.get_grid_offset(grid_id))
 print(' - variable type:', m.get_var_type(var_name))
 print(' - units:', m.get_var_units(var_name))
 print(' - itemsize:', m.get_var_itemsize(var_name))
