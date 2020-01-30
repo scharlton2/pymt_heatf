@@ -60,6 +60,7 @@ print(' - variable type:', m.get_var_type(var_name))
 print(' - units:', m.get_var_units(var_name))
 print(' - itemsize:', m.get_var_itemsize(var_name))
 print(' - nbytes:', m.get_var_nbytes(var_name))
+print(' - location:', m.get_var_location(var_name))
 
 # Get the temperature values.
 val = np.empty(grid_shape, dtype=np.float32)
@@ -109,6 +110,7 @@ print(' - variable type:', m.get_var_type(var_name))
 print(' - units:', m.get_var_units(var_name))
 print(' - itemsize:', m.get_var_itemsize(var_name))
 print(' - nbytes:', m.get_var_nbytes(var_name))
+print(' - location:', m.get_var_location(var_name))
 
 # Get the diffusivity values.
 val = np.empty(1, dtype=np.float32)
@@ -140,6 +142,7 @@ print(' - variable type:', m.get_var_type(var_name))
 print(' - units:', m.get_var_units(var_name))
 print(' - itemsize:', m.get_var_itemsize(var_name))
 print(' - nbytes:', m.get_var_nbytes(var_name))
+print(' - location:', m.get_var_location(var_name))
 
 # Get the model id.
 val = np.empty(1, dtype=np.int32)

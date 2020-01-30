@@ -54,6 +54,7 @@ print(' - variable type:', m.get_var_type(var_name))
 print(' - units:', m.get_var_units(var_name))
 print(' - itemsize:', m.get_var_itemsize(var_name))
 print(' - nbytes:', m.get_var_nbytes(var_name))
+print(' - location:', m.get_var_location(var_name))
 
 # Get the temperature values.
 val = m.get_value(var_name)
@@ -96,6 +97,7 @@ print(' - variable type:', m.get_var_type(var_name))
 print(' - units:', m.get_var_units(var_name))
 print(' - itemsize:', m.get_var_itemsize(var_name))
 print(' - nbytes:', m.get_var_nbytes(var_name))
+print(' - location:', m.get_var_location(var_name))
 
 # Get the diffusivity values.
 val = m.get_value(var_name)
@@ -120,6 +122,7 @@ print(' - variable type:', m.get_var_type(var_name))
 print(' - units:', m.get_var_units(var_name))
 print(' - itemsize:', m.get_var_itemsize(var_name))
 print(' - nbytes:', m.get_var_nbytes(var_name))
+print(' - location:', m.get_var_location(var_name))
 
 # Get the model id.
 val = m.get_value(var_name)
