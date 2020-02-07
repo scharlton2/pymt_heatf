@@ -4,12 +4,12 @@
 module bmi_interoperability
 
   use, intrinsic :: iso_c_binding
-  use bmif
+  use bmif_2_0
   use bmiheatf
 
   implicit none
 
-  integer, parameter :: N_MODELS = 256
+  integer, parameter :: N_MODELS = 2048
   type (bmi_heat) :: model_array(N_MODELS)
   logical :: model_avail(N_MODELS) = .true.
 
@@ -237,17 +237,6 @@ contains
   end function bmi_update
 
   !
-  ! Advance the model by a fraction of a time step.
-  !
-  function bmi_update_frac(model_index, time_frac) bind(c) result(status)
-    integer (c_int), intent(in), value :: model_index
-    real (c_double), intent(in), value :: time_frac
-    integer (c_int) :: status
-
-    status = model_array(model_index)%update_frac(time_frac)
-  end function bmi_update_frac
-
-  !
   ! Advance the model to a time in the future.
   !
   function bmi_update_until(model_index, time_later) bind(c) result(status)
@@ -414,32 +403,99 @@ contains
   end function bmi_get_grid_z
 
   !
-  ! Get the connectivity of a grid's nodes.
+  ! Get the number of nodes in a grid.
   !
-  function bmi_get_grid_connectivity(model_index, grid_id, grid_conn, n) &
+  function bmi_get_grid_node_count(model_index, grid_id, node_count) &
+       bind(c) result(status)
+    integer (c_int), intent(in), value :: model_index
+    integer (c_int), intent(in), value :: grid_id
+    integer (c_int), intent(out) :: node_count
+    integer (c_int) :: status
+
+    status = model_array(model_index)%get_grid_node_count(grid_id, node_count)
+  end function bmi_get_grid_node_count
+
+  !
+  ! Get the number of edges in a grid.
+  !
+  function bmi_get_grid_edge_count(model_index, grid_id, edge_count) &
+       bind(c) result(status)
+    integer (c_int), intent(in), value :: model_index
+    integer (c_int), intent(in), value :: grid_id
+    integer (c_int), intent(out) :: edge_count
+    integer (c_int) :: status
+
+    status = model_array(model_index)%get_grid_edge_count(grid_id, edge_count)
+  end function bmi_get_grid_edge_count
+
+  !
+  ! Get the number of faces in a grid.
+  !
+  function bmi_get_grid_face_count(model_index, grid_id, face_count) &
+       bind(c) result(status)
+    integer (c_int), intent(in), value :: model_index
+    integer (c_int), intent(in), value :: grid_id
+    integer (c_int), intent(out) :: face_count
+    integer (c_int) :: status
+
+    status = model_array(model_index)%get_grid_face_count(grid_id, face_count)
+  end function bmi_get_grid_face_count
+
+  !
+  ! Get the edge-node connectivity of a grid.
+  !
+  function bmi_get_grid_edge_nodes(model_index, grid_id, edge_nodes, n) &
        bind(c) result(status)
     integer (c_int), intent(in), value :: model_index
     integer (c_int), intent(in), value :: grid_id
     integer (c_int), intent(in), value :: n
-    integer (c_int), intent(out) :: grid_conn(n)
+    integer (c_int), intent(out) :: edge_nodes(n)
     integer (c_int) :: status
 
-    status = model_array(model_index)%get_grid_connectivity(grid_id, grid_conn)
-  end function bmi_get_grid_connectivity
+    status = model_array(model_index)%get_grid_edge_nodes(grid_id, edge_nodes)
+  end function bmi_get_grid_edge_nodes
 
   !
-  ! Get the offset of a grid's nodes.
+  ! Get the face-edge connectivity of a grid.
   !
-  function bmi_get_grid_offset(model_index, grid_id, grid_offset, n) &
+  function bmi_get_grid_face_edges(model_index, grid_id, face_edges, n) &
        bind(c) result(status)
     integer (c_int), intent(in), value :: model_index
     integer (c_int), intent(in), value :: grid_id
     integer (c_int), intent(in), value :: n
-    integer (c_int), intent(out) :: grid_offset(n)
+    integer (c_int), intent(out) :: face_edges(n)
     integer (c_int) :: status
 
-    status = model_array(model_index)%get_grid_offset(grid_id, grid_offset)
-  end function bmi_get_grid_offset
+    status = model_array(model_index)%get_grid_face_edges(grid_id, face_edges)
+  end function bmi_get_grid_face_edges
+
+  !
+  ! Get the face-node connectivity of a grid.
+  !
+  function bmi_get_grid_face_nodes(model_index, grid_id, face_nodes, n) &
+       bind(c) result(status)
+    integer (c_int), intent(in), value :: model_index
+    integer (c_int), intent(in), value :: grid_id
+    integer (c_int), intent(in), value :: n
+    integer (c_int), intent(out) :: face_nodes(n)
+    integer (c_int) :: status
+
+    status = model_array(model_index)%get_grid_face_nodes(grid_id, face_nodes)
+  end function bmi_get_grid_face_nodes
+
+  !
+  ! Get the number of nodes per face in a grid.
+  !
+  function bmi_get_grid_nodes_per_face(model_index, grid_id, nodes_per_face, n) &
+       bind(c) result(status)
+    integer (c_int), intent(in), value :: model_index
+    integer (c_int), intent(in), value :: grid_id
+    integer (c_int), intent(in), value :: n
+    integer (c_int), intent(out) :: nodes_per_face(n)
+    integer (c_int) :: status
+
+    status = model_array(model_index)%get_grid_nodes_per_face(grid_id, nodes_per_face)
+  end function bmi_get_grid_nodes_per_face
 
   !
   ! Get the type for the specified variable.
@@ -542,6 +598,36 @@ contains
   end function bmi_get_var_nbytes
 
   !
+  ! Get the location where the specified variable is defined.
+  !
+  function bmi_get_var_location(model_index, var_name, n, var_location, m) &
+       bind(c) result(status)
+    integer (c_int), intent(in), value :: model_index
+    integer (c_int), intent(in), value :: n
+    character (len=1, kind=c_char), intent(in) :: var_name(n)
+    integer (c_int), intent(in), value :: m
+    character (len=1, kind=c_char), intent(out) :: var_location(m)
+
+    integer (c_int) :: i, status
+    character (len=n, kind=c_char) :: var_name_
+    character (len=m, kind=c_char) :: var_location_
+
+    do i = 1, n
+       var_name_(i:i) = var_name(i)
+    enddo
+    do i = 1, m
+       var_location_(i:i) = var_location(i)
+    enddo
+
+    status = model_array(model_index)%get_var_location(var_name_, var_location_)
+
+    do i = 1, len(trim(var_location_))
+        var_location(i) = var_location_(i:i)
+    enddo
+    var_location = var_location//C_NULL_CHAR
+  end function bmi_get_var_location
+
+  !
   ! Get a copy of an integer variable's values, flattened.
   !
   function bmi_get_value_int(model_index, var_name, n, buffer, m) &
@@ -634,18 +720,21 @@ contains
     status = model_array(model_index)%get_var_type(var_name_, var_type)
 
     select case(var_type)
-    case("integer")
+    case("integer", "INTEGER")
        status = model_array(model_index)%get_value_ptr(var_name_, idest)
-       ref = c_loc(idest(1))
-       status = BMI_SUCCESS
-    case("real")
+       if (status == BMI_SUCCESS) then
+          ref = c_loc(idest(1))
+       end if
+    case("real", "REAL", "real*4", "REAL*4")
        status = model_array(model_index)%get_value_ptr(var_name_, rdest)
-       ref = c_loc(rdest(1))
-       status = BMI_SUCCESS
-    case("double precision")
+       if (status == BMI_SUCCESS) then
+          ref = c_loc(rdest(1))
+       end if
+    case("double precision", "DOUBLE PRECISION", "real*8", "REAL*8")
        status = model_array(model_index)%get_value_ptr(var_name_, ddest)
-       ref = c_loc(ddest(1))
-       status = BMI_SUCCESS
+       if (status == BMI_SUCCESS) then
+          ref = c_loc(ddest(1))
+       end if
     case default
        status = BMI_FAILURE
     end select

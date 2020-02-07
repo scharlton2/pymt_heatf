@@ -2,8 +2,7 @@ build:
   define_macros: []
   extra_compile_args: []
   include_dirs: []
-  libraries:
-  - bmif
+  libraries: []
   library_dirs: []
   undef_macros: []
 info:
@@ -19,4 +18,4 @@ library:
 plugin:
   name: heatf
   requirements:
-  - bmi-fortran
+  - bmi-fortran=2.0
