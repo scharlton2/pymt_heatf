@@ -24,7 +24,7 @@ number_of_rows:
   description: Number of grid rows
   value:
     type: int
-    default: 10
+    default: 8
     range:
       min: 0
       max: 10000
@@ -35,7 +35,7 @@ number_of_columns:
   description: Number of grid columns
   value:
     type: int
-    default: 10
+    default: 6
     range:
       min: 0
       max: 10000
