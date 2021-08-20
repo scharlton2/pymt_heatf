@@ -40,8 +40,8 @@ cdef extern from "bmi_interoperability.h":
     int bmi_finalize(int model)
 
     int bmi_get_component_name(int model, char *name, int n_chars)
-    int bmi_get_input_var_name_count(int model, int *count)
-    int bmi_get_output_var_name_count(int model, int *count)
+    int bmi_get_input_item_count(int model, int *count)
+    int bmi_get_output_item_count(int model, int *count)
     int bmi_get_input_var_names(int model, char **names, int n_names)
     int bmi_get_output_var_names(int model, char **names, int n_names)
 
@@ -122,13 +122,14 @@ cpdef to_string(bytes):
     except AttributeError:
         return bytes
 
+# start: heatbmi.pyx
 
-# start: heatf.pyx
-
-cdef class Heatf:
+cdef class HeatBMI:
 
     cdef int _bmi
     cdef char[2048] STR_BUFFER
+
+    METADATA = "../data/HeatBMI"
 
     def __cinit__(self):
         self._bmi = bmi_new()
@@ -160,9 +161,9 @@ cdef class Heatf:
                                                 MAX_COMPONENT_NAME))
         return to_string(self.STR_BUFFER)
 
-    cpdef int get_input_var_name_count(self):
+    cpdef int get_input_item_count(self):
         cdef int count = 0
-        ok_or_raise(<int>bmi_get_input_var_name_count(self._bmi, &count))
+        ok_or_raise(<int>bmi_get_input_item_count(self._bmi, &count))
         return count
 
     cpdef object get_input_var_names(self):
@@ -172,7 +173,7 @@ cdef class Heatf:
         cdef int count
         cdef int status = 1
 
-        ok_or_raise(<int>bmi_get_input_var_name_count(self._bmi, &count))
+        ok_or_raise(<int>bmi_get_input_item_count(self._bmi, &count))
 
         try:
             names = <char**>malloc(count * sizeof(char*))
@@ -193,9 +194,9 @@ cdef class Heatf:
 
         return tuple(py_names)
 
-    cpdef int get_output_var_name_count(self):
+    cpdef int get_output_item_count(self):
         cdef int count = 0
-        ok_or_raise(<int>bmi_get_output_var_name_count(self._bmi, &count))
+        ok_or_raise(<int>bmi_get_output_item_count(self._bmi, &count))
         return count
 
     cpdef object get_output_var_names(self):
@@ -205,7 +206,7 @@ cdef class Heatf:
         cdef int count
         cdef int status = 1
 
-        ok_or_raise(<int>bmi_get_output_var_name_count(self._bmi, &count))
+        ok_or_raise(<int>bmi_get_output_item_count(self._bmi, &count))
 
         try:
             names = <char**>malloc(count * sizeof(char*))
@@ -287,41 +288,72 @@ cdef class Heatf:
     cpdef np.ndarray get_grid_shape(self, grid_id, \
                                     np.ndarray[int, ndim=1] shape):
         cdef int rank = self.get_grid_rank(grid_id)
-        ok_or_raise(<int>bmi_get_grid_shape(self._bmi, grid_id,
-                                            &shape[0], rank))
+        if rank > 0:
+            ok_or_raise(<int>bmi_get_grid_shape(self._bmi, grid_id,
+                                                &shape[0], rank))
         return shape
 
     cpdef np.ndarray get_grid_spacing(self, grid_id, \
                                       np.ndarray[double, ndim=1] spacing):
         cdef int rank = self.get_grid_rank(grid_id)
-        ok_or_raise(<int>bmi_get_grid_spacing(self._bmi, grid_id,
-                                              &spacing[0], rank))
+        if rank > 0:
+            ok_or_raise(<int>bmi_get_grid_spacing(self._bmi, grid_id,
+                                                  &spacing[0], rank))
         return spacing
 
     cpdef np.ndarray get_grid_origin(self, grid_id, \
                                      np.ndarray[double, ndim=1] origin):
         cdef int rank = self.get_grid_rank(grid_id)
-        ok_or_raise(<int>bmi_get_grid_origin(self._bmi, grid_id,
-                                             &origin[0], rank))
+        if rank > 0:
+            ok_or_raise(<int>bmi_get_grid_origin(self._bmi, grid_id,
+                                                 &origin[0], rank))
         return origin
 
     cpdef np.ndarray get_grid_x(self, grid_id, \
                                 np.ndarray[double, ndim=1] grid_x):
-        cdef int size = self.get_grid_size(grid_id)
+        cdef int size
+
+        if self.get_grid_type(grid_id) == 'rectilinear':
+            rank = self.get_grid_rank(grid_id)
+            shape = np.ndarray(rank, dtype=np.int32)
+            size = self.get_grid_shape(grid_id, shape)[1]
+        else:
+            size = self.get_grid_size(grid_id)
+
         ok_or_raise(<int>bmi_get_grid_x(self._bmi, grid_id,
                                         &grid_x[0], size))
         return grid_x
 
     cpdef np.ndarray get_grid_y(self, grid_id, \
                                 np.ndarray[double, ndim=1] grid_y):
-        cdef int size = self.get_grid_size(grid_id)
+        cdef int size
+
+        if self.get_grid_type(grid_id) == 'rectilinear':
+            rank = self.get_grid_rank(grid_id)
+            shape = np.ndarray(rank, dtype=np.int32)
+            size = self.get_grid_shape(grid_id, shape)[0]
+        else:
+            size = self.get_grid_size(grid_id)
+
         ok_or_raise(<int>bmi_get_grid_y(self._bmi, grid_id,
                                         &grid_y[0], size))
         return grid_y
 
     cpdef np.ndarray get_grid_z(self, grid_id, \
                                 np.ndarray[double, ndim=1] grid_z):
-        cdef int size = self.get_grid_size(grid_id)
+        cdef int size
+
+        if self.get_grid_type(grid_id) == 'rectilinear':
+            rank = self.get_grid_rank(grid_id)
+            shape = np.ndarray(rank, dtype=np.int32)
+            self.get_grid_shape(grid_id, shape)
+            if rank > 2:
+                size = shape[2]
+            else:
+                size = 1
+        else:
+            size = self.get_grid_size(grid_id)
+
         ok_or_raise(<int>bmi_get_grid_z(self._bmi, grid_id,
                                         &grid_z[0], size))
         return grid_z

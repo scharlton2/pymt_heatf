@@ -10,23 +10,25 @@ pymt_heatf
 .. image:: https://img.shields.io/badge/recipe-pymt_heatf-green.svg
         :target: https://anaconda.org/conda-forge/pymt_heatf
 
-.. image:: https://img.shields.io/travis/mdpiper/pymt_heatf.svg
-        :target: https://travis-ci.org/mdpiper/pymt_heatf
-
-.. image:: https://readthedocs.org/projects/pymt_heatf/badge/?version=latest
-        :target: https://pymt_heatf.readthedocs.io/en/latest/?badge=latest
+.. image:: https://readthedocs.org/projects/pymt-heatf/badge/?version=latest
+        :target: https://pymt-heatf.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
-.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
-        :target: https://github.com/csdms/pymt
-        :alt: Code style: black
+.. image:: https://github.com/mdpiper/pymt_heatf/actions/workflows/test.yml/badge.svg
+        :target: https://github.com/mdpiper/pymt_heatf/actions/workflows/test.yml
+
+.. image:: https://github.com/mdpiper/pymt_heatf/actions/workflows/flake8.yml/badge.svg
+        :target: https://github.com/mdpiper/pymt_heatf/actions/workflows/flake8.yml
+
+.. image:: https://github.com/mdpiper/pymt_heatf/actions/workflows/black.yml/badge.svg
+        :target: https://github.com/mdpiper/pymt_heatf/actions/workflows/black.yml
 
 
-PyMT plugin for heatf
+PyMT plugin for heatf model
 
 
-* Free software: MIT license
-* Documentation: https://heatf.readthedocs.io.
+* Free software: MIT License
+* Documentation: https://pymt-heatf.readthedocs.io.
 
 
 
@@ -34,7 +36,7 @@ PyMT plugin for heatf
 ========= ===================================
 Component PyMT
 ========= ===================================
-Heatf     `from pymt.models import Heatf`
+HeatBMI   `from pymt.models import HeatBMI`
 ========= ===================================
 
 ---------------
@@ -53,7 +55,7 @@ into which to install it. This can be done with,
 
 .. code::
 
-  conda create -n pymt python=3.6
+  conda create -n pymt python=3
   conda activate pymt
 
 Once the `conda-forge` channel has been enabled, `pymt` can be installed with:
@@ -72,12 +74,7 @@ It is possible to list all of the versions of `pymt` available on your platform 
 Installing pymt_heatf
 ---------------------
 
-Once `pymt` is installed, the dependencies of `pymt_heatf` can
-be installed with:
 
-.. code::
-
-  conda install bmi-fortran=2.0
 
 To install `pymt_heatf`,
 
