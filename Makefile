@@ -51,11 +51,11 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr .pytest_cache
 
 lint: ## check style with flake8
-	flake8 pymt_heatf
+	flake8 pymt_heatf examples
 
 pretty:
 	find pymt_heatf -name '*.py' | xargs isort
-	black setup.py pymt_heatf
+	black setup.py pymt_heatf examples
 
 test: ## run tests quickly with the default Python
 	bmi-test pymt_heatf.bmi:HeatBMI -vvv
