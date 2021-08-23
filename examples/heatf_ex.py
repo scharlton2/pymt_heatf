@@ -1,39 +1,20 @@
-"""An example of calling a Fortran BMI through Cython."""
-
+"""Run the heatf model through its BMI in Python."""
 import numpy as np
-from pymt_heatf import Heatf
+from pymt_heatf import HeatBMI
 
 
 config_file = 'test.cfg'
+np.set_printoptions(formatter={"float": "{: 6.2f}".format})
 
 
-np.set_printoptions(formatter={'float': '{: 6.1f}'.format})
-
-# Instantiate a model and get its name.
-m = Heatf()
+# Instatiate and initialize the model.
+m = HeatBMI()
 print(m.get_component_name())
-
-# Initialize the model.
 m.initialize(config_file)
 
-# List the model's echange items.
+# List the model's exchange items.
 print('Input vars:', m.get_input_var_names())
 print('Output vars:', m.get_output_var_names())
-
-# Get time information from the model.
-print('Start time:', m.get_start_time())
-print('End time:', m.get_end_time())
-print('Current time:', m.get_current_time())
-print('Time step:', m.get_time_step())
-print('Time units:', m.get_time_units())
-
-# Advance the model by one time step.
-m.update()
-print('Current time:', m.get_current_time())
-
-# Advance the model until a later time.
-m.update_until(10.0)
-print('Current time:', m.get_current_time())
 
 # Get the grid_id for the plate_surface__temperature variable.
 var_name = 'plate_surface__temperature'
@@ -62,29 +43,42 @@ print(' - itemsize:', m.get_var_itemsize(var_name))
 print(' - nbytes:', m.get_var_nbytes(var_name))
 print(' - location:', m.get_var_location(var_name))
 
-# Get the temperature values.
-val = np.empty(grid_shape, dtype=np.float32)
+# Get the initial temperature values.
+# val = np.empty(grid_shape, dtype=np.float32)
+val = np.empty(grid_size, dtype=np.float32)
 m.get_value(var_name, val)
 print(' - values (streamwise):')
 print(val)
 print(' - values (gridded):')
-print(val.reshape(np.roll(grid_shape, 1)))
+# print(val.reshape(np.roll(grid_shape, 1)))
+print(val.reshape(grid_shape, order="F"))
 
-# Set new temperature values.
-new = np.arange(grid_size, dtype=np.float32)  # 'real*4 in Fortran
-m.set_value(var_name, new)
-check = np.empty(grid_shape, dtype=np.float32)
+# Get time information from the model.
+print('Start time:', m.get_start_time())
+print('End time:', m.get_end_time())
+print('Current time:', m.get_current_time())
+print('Time step:', m.get_time_step())
+print('Time units:', m.get_time_units())
+
+# Advance the model by one time step and check the temperature values.
+m.update()
+check = np.empty(grid_size, dtype=np.float32)
 m.get_value(var_name, check)
-print(' - new values (set/get, streamwise):');
-print(check)
+print(' - values (gridded) at time {}:'.format(m.get_current_time()))
+print(check.reshape(grid_shape, order="F"))
 
 # Get a reference to the temperature values and check that it updates.
-print(' - values (by ref, streamwise) at time {}:'.format(m.get_current_time()))
+print(' - values (by ref, gridded) at time {}:'.format(m.get_current_time()))
 ref = m.get_value_ptr(var_name)
-print(ref)
+print(ref.reshape(grid_shape, order="F"))
 m.update()
-print(' - values (by ref, streamwise) at time {}:'.format(m.get_current_time()))
-print(ref)
+print(' - values (by ref, gridded) at time {}:'.format(m.get_current_time()))
+print(ref.reshape(grid_shape, order="F"))
+
+# Advance the model until a later time.
+m.update_until(5.0)
+print(' - values (by ref, gridded) at time {}:'.format(m.get_current_time()))
+print(ref.reshape(grid_shape, order="F"))
 
 # Get the grid_id for the plate_surface__thermal_diffusivity variable.
 var_name = 'plate_surface__thermal_diffusivity'
@@ -155,7 +149,7 @@ new = np.array(42, dtype=np.intc)
 m.set_value(var_name, new)
 check = np.empty(1, dtype=np.int32)
 m.get_value(var_name, check)
-print(' - new values (set/get):');
+print(' - new values (set/get):')
 print(check)
 
 # Finalize the model.
