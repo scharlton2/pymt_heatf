@@ -2,6 +2,6 @@
 
 from .heatbmi import HeatBMI
 
-
-__all__ = ["HeatBMI",
+__all__ = [
+    "HeatBMI",
 ]
