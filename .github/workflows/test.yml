@@ -19,11 +19,13 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest]
         python-version: [3.9]
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          submodules: true
 
       - uses: conda-incubator/setup-miniconda@v2
         with:
@@ -42,6 +44,13 @@ jobs:
           conda install mamba
           mamba install --file=requirements-build.txt --file=requirements-library.txt
           mamba list
+
+      - name: Make Fortran example
+        run: |
+          mkdir buildf && pushd buildf
+          cmake ../external/bmi-example-fortran -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX
+          make install
+          popd
 
       - name: Build and install package
         run: |
