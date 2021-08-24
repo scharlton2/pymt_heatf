@@ -1,8 +1,8 @@
 Changelog for pymt_heatf
 ========================
 
-2.0 (unreleased)
--------------------
+2.0 (2021-08-24)
+----------------
 
 - Rerender with babelizer v0.3.8
 - Update examples of running model through BMI and pymt
