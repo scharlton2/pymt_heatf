@@ -13,7 +13,7 @@ thermal_diffusivity:
   description: Thermal diffusivity
   value:
     type: float
-    default: 1.0
+    default: 0.75
     range:
       min: 0.0
       max: 10.0
