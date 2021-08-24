@@ -2,7 +2,7 @@ run_duration:
   description: Simulation run time
   value:
     type: float
-    default: 1.0
+    default: 50.0
     units: s
     range:
       min: 0.0
@@ -13,7 +13,7 @@ thermal_diffusivity:
   description: Thermal diffusivity
   value:
     type: float
-    default: 1.0
+    default: 0.75
     range:
       min: 0.0
       max: 10.0
@@ -24,7 +24,7 @@ number_of_rows:
   description: Number of grid rows
   value:
     type: int
-    default: 10
+    default: 8
     range:
       min: 0
       max: 10000
@@ -35,7 +35,7 @@ number_of_columns:
   description: Number of grid columns
   value:
     type: int
-    default: 10
+    default: 6
     range:
       min: 0
       max: 10000

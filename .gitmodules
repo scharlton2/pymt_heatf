@@ -1,0 +1,3 @@
+[submodule "external/bmi-example-fortran"]
+	path = external/bmi-example-fortran
+	url = https://github.com/csdms/bmi-example-fortran

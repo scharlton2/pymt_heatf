@@ -51,20 +51,20 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr .pytest_cache
 
 lint: ## check style with flake8
-	flake8 pymt_heatf
+	flake8 pymt_heatf examples
 
 pretty:
 	find pymt_heatf -name '*.py' | xargs isort
-	black setup.py pymt_heatf
+	black setup.py pymt_heatf examples
 
 test: ## run tests quickly with the default Python
-	bmi-test pymt_heatf.bmi:Heatf -vvv
+	bmi-test pymt_heatf.bmi:HeatBMI -vvv
 
 test-all: ## run tests on every Python version with tox
 	tox
 
 coverage: ## check code coverage quickly with the default Python
-	coverage run --source heatf -m pytest
+	coverage run --source pymt_heatf -m pytest
 	coverage report -m
 	coverage html
 	$(BROWSER) htmlcov/index.html
@@ -89,4 +89,4 @@ dist: clean ## builds source and wheel package
 	ls -l dist
 
 install: clean ## install the package to the active Python's site-packages
-	python setup.py develop
+	pip install -e .

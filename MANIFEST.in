@@ -1,2 +1,15 @@
-include versioneer.py
-include pymt_heatf/_version.py
+recursive-include pymt_heatf/data *
+include LICENSE
+include requirements.txt
+include *.rst
+include *.txt
+include Makefile
+include babel.toml
+recursive-include pymt_heatf *.pyx
+recursive-include docs *.py
+recursive-include docs *.rst
+recursive-include docs Makefile
+recursive-exclude meta *
+recursive-exclude recipe *
+recursive-exclude pymt_heatf *.cpp
+recursive-exclude pymt_heatf *.c
