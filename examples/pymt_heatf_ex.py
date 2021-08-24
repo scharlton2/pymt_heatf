@@ -14,6 +14,13 @@ print(m.get_component_name())
 args = m.setup(".")
 m.initialize(*args)
 
+# Get time information from the model.
+print("Start time:", m.start_time)
+print("End time:", m.end_time)
+print("Current time:", m.time)
+print("Time step:", m.time_step)
+print("Time units:", m.time_units)
+
 # List the model's exchange items.
 print("Number of input vars:", len(m.input_var_names))
 for var in m.input_var_names:
@@ -21,13 +28,6 @@ for var in m.input_var_names:
 print("Number of output vars:", len(m.output_var_names))
 for var in m.output_var_names:
     print(" - {}".format(var))
-
-# Get time information from the model.
-print("Start time:", m.start_time)
-print("End time:", m.end_time)
-print("Current time:", m.time)
-print("Time step:", m.time_step)
-print("Time units:", m.time_units)
 
 # Get variable info.
 var_name = m.output_var_names[0]

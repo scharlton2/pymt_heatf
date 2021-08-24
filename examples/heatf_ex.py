@@ -12,6 +12,13 @@ m = HeatBMI()
 print(m.get_component_name())
 m.initialize(config_file)
 
+# Get time information from the model.
+print("Start time:", m.get_start_time())
+print("End time:", m.get_end_time())
+print("Current time:", m.get_current_time())
+print("Time step:", m.get_time_step())
+print("Time units:", m.get_time_units())
+
 # List the model's exchange items.
 print("Input vars:", m.get_input_var_names())
 print("Output vars:", m.get_output_var_names())
@@ -53,13 +60,6 @@ print(" - values (gridded):")
 # print(val.reshape(np.roll(grid_shape, 1)))
 print(val.reshape(grid_shape, order="F"))
 
-# Get time information from the model.
-print("Start time:", m.get_start_time())
-print("End time:", m.get_end_time())
-print("Current time:", m.get_current_time())
-print("Time step:", m.get_time_step())
-print("Time units:", m.get_time_units())
-
 # Advance the model by one time step and check the temperature values.
 m.update()
 check = np.empty(grid_size, dtype=np.float32)
@@ -79,6 +79,23 @@ print(ref.reshape(grid_shape, order="F"))
 m.update_until(5.0)
 print(" - values (by ref, gridded) at time {}:".format(m.get_current_time()))
 print(ref.reshape(grid_shape, order="F"))
+
+# Set new temperature values.
+print("Set new values for {}...".format(var_name))
+new = np.zeros_like(val)
+new[20] = 10.0
+m.set_value(var_name, new)
+check = np.empty(grid_size, dtype=np.float32)
+m.get_value(var_name, check)
+print(" - new values (gridded):")
+print(check.reshape(grid_shape, order="F"))
+
+# Advance the model by one time step.
+m.update()
+check = np.empty(grid_size, dtype=np.float32)
+m.get_value(var_name, check)
+print(" - values (gridded) at time {}:".format(m.get_current_time()))
+print(check.reshape(grid_shape, order="F"))
 
 # Get the grid_id for the plate_surface__thermal_diffusivity variable.
 var_name = "plate_surface__thermal_diffusivity"
