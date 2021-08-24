@@ -97,7 +97,7 @@ setup(
     author_email="mark.piper@colorado.edu",
     description="PyMT plugin for pymt_heatf",
     long_description=long_description,
-    version="2.0",
+    version="2.1.dev0",
     url="https://github.com/pymt-lab/pymt_heatf",
     classifiers=[
         "Development Status :: 4 - Beta",
