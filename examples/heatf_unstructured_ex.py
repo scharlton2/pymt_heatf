@@ -1,14 +1,13 @@
 """An example of calling a Fortran BMI through Cython."""
-
 import numpy as np
-from pymt_heatf import Heatf
+from pymt_heatf import HeatBMI
 
 
 config_file = "test.cfg"
 
 
 # Instantiate a model and get its name.
-m = Heatf()
+m = HeatBMI()
 print(m.get_component_name())
 
 # Initialize the model.
@@ -44,27 +43,6 @@ print(" - face edges:", face_edges)
 face_nodes = np.empty(np.sum(nodes_per_face), dtype=np.int32)
 m.get_grid_face_nodes(grid_id, face_nodes)
 print(" - face nodes:", face_nodes)
-
-
-# print(' - grid type:', m.get_grid_type(grid_id))
-# grid_rank = m.get_grid_rank(grid_id)
-# print(' - rank:', grid_rank)
-# grid_shape = np.empty(grid_rank, dtype=np.int32)
-# m.get_grid_shape(grid_id, grid_shape)
-# print(' - shape:', grid_shape)
-# grid_size = m.get_grid_size(grid_id)
-# print(' - size:', grid_size)
-# grid_spacing = np.empty(grid_rank, dtype=np.float64)
-# m.get_grid_spacing(grid_id, grid_spacing)
-# print(' - spacing:', grid_spacing)
-# grid_origin = np.empty(grid_rank, dtype=np.float64)
-# m.get_grid_origin(grid_id, grid_origin)
-# print(' - origin:', grid_origin)
-# print(' - variable type:', m.get_var_type(var_name))
-# print(' - units:', m.get_var_units(var_name))
-# print(' - itemsize:', m.get_var_itemsize(var_name))
-# print(' - nbytes:', m.get_var_nbytes(var_name))
-# print(' - location:', m.get_var_location(var_name))
 
 # Finalize the model.
 m.finalize()
