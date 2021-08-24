@@ -2,7 +2,7 @@ run_duration:
   description: Simulation run time
   value:
     type: float
-    default: 1.0
+    default: 50.0
     units: s
     range:
       min: 0.0
