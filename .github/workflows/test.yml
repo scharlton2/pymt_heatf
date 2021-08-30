@@ -62,7 +62,7 @@ jobs:
       - name: Test
         run: |
           python -c 'import pymt_heatf'
-          bmi-test pymt_heatf.bmi:HeatBMI -vvv
+          bmi-test pymt_heatf.bmi:HeatModelF -vvv
 
       - name: Install example dependencies
         run: mamba install pymt

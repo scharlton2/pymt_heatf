@@ -33,11 +33,11 @@ PyMT plugin for heatf model
 
 
 
-========= ===================================
-Component PyMT
-========= ===================================
-HeatBMI   `from pymt.models import HeatBMI`
-========= ===================================
+========== ====================================
+Component  PyMT
+========== ====================================
+HeatModelF `from pymt.models import HeatModelF`
+========== ====================================
 
 ---------------
 Installing pymt

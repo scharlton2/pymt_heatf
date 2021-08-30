@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 
-from .lib import HeatBMI
+from .lib import HeatModelF
 
 __all__ = [
-    "HeatBMI",
+    "HeatModelF",
 ]

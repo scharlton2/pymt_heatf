@@ -1,4 +1,4 @@
 name: pymt_heatf
 language: fortran
 package: pymt_heatf
-class: HeatBMI
+class: HeatModelF

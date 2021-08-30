@@ -1,14 +1,14 @@
 """Run the heatf model through its BMI in Python."""
 import numpy as np
-from pymt_heatf import HeatBMI
+from pymt_heatf import HeatModelF
 
 
 config_file = "test.cfg"
 np.set_printoptions(formatter={"float": "{: 6.2f}".format})
 
 
-# Instatiate and initialize the model.
-m = HeatBMI()
+# Instantiate and initialize the model.
+m = HeatModelF()
 print(m.get_component_name())
 m.initialize(config_file)
 
@@ -50,52 +50,49 @@ print(" - itemsize:", m.get_var_itemsize(var_name))
 print(" - nbytes:", m.get_var_nbytes(var_name))
 print(" - location:", m.get_var_location(var_name))
 
-# Get the initial temperature values.
-# val = np.empty(grid_shape, dtype=np.float32)
+# View default initial temperature values.
 val = np.empty(grid_size, dtype=np.float32)
 m.get_value(var_name, val)
-print(" - values (streamwise):")
+print(" - initial values (flattened):")
 print(val)
-print(" - values (gridded):")
-# print(val.reshape(np.roll(grid_shape, 1)))
+print(" - initial values (gridded):")
 print(val.reshape(grid_shape, order="F"))
 
-# Advance the model by one time step and check the temperature values.
-m.update()
-check = np.empty(grid_size, dtype=np.float32)
-m.get_value(var_name, check)
-print(" - values (gridded) at time {}:".format(m.get_current_time()))
-print(check.reshape(grid_shape, order="F"))
-
-# Get a reference to the temperature values and check that it updates.
-print(" - values (by ref, gridded) at time {}:".format(m.get_current_time()))
-ref = m.get_value_ptr(var_name)
-print(ref.reshape(grid_shape, order="F"))
-m.update()
-print(" - values (by ref, gridded) at time {}:".format(m.get_current_time()))
-print(ref.reshape(grid_shape, order="F"))
-
-# Advance the model until a later time.
-m.update_until(5.0)
-print(" - values (by ref, gridded) at time {}:".format(m.get_current_time()))
-print(ref.reshape(grid_shape, order="F"))
-
-# Set new temperature values.
-print("Set new values for {}...".format(var_name))
-new = np.zeros_like(val)
+# Set new initial temperature values.
+new = np.zeros(grid_size, dtype=np.float32)
 new[20] = 10.0
 m.set_value(var_name, new)
-check = np.empty(grid_size, dtype=np.float32)
-m.get_value(var_name, check)
-print(" - new values (gridded):")
-print(check.reshape(grid_shape, order="F"))
+val = np.empty(grid_size, dtype=np.float32)
+m.get_value(var_name, val)
+print(" - new initial values (flattened):")
+print(val)
+print(" - new initial values (gridded):")
+print(val.reshape(grid_shape, order="F"))
 
 # Advance the model by one time step.
 m.update()
-check = np.empty(grid_size, dtype=np.float32)
-m.get_value(var_name, check)
-print(" - values (gridded) at time {}:".format(m.get_current_time()))
-print(check.reshape(grid_shape, order="F"))
+print("Updated time:", m.get_current_time())
+val = np.empty(grid_size, dtype=np.float32)
+m.get_value(var_name, val)
+print(" - updated values (gridded):")
+print(val.reshape(grid_shape, order="F"))
+
+# # Get a reference to the temperature values and check that it updates.
+# print(" - values (by ref, gridded) at time {}:".format(m.get_current_time()))
+# ref = m.get_value_ptr(var_name)
+# print(ref.reshape(grid_shape, order="F"))
+# m.update()
+# print(" - values (by ref, gridded) at time {}:".format(m.get_current_time()))
+# print(ref.reshape(grid_shape, order="F"))
+
+# Advance the model until a later time.
+m.update_until(5.0)
+print("Later time:", m.get_current_time())
+val = np.empty(grid_size, dtype=np.float32)
+m.get_value(var_name, val)
+print(" - updated values (gridded):")
+print(val.reshape(grid_shape, order="F"))
+# print(ref.reshape(grid_shape))
 
 # Get the grid_id for the plate_surface__thermal_diffusivity variable.
 var_name = "plate_surface__thermal_diffusivity"

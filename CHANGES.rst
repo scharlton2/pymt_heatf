@@ -4,7 +4,7 @@ Changelog for pymt_heatf
 2.1 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Rename component from HeatBMI to HeatModelF (#4)
 
 
 2.0 (2021-08-24)

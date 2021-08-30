@@ -1,14 +1,14 @@
 """Run the heatf model in pymt."""
 import numpy as np
-from pymt.models import HeatBMI
+from pymt.models import HeatModelF
 
 
 np.set_printoptions(formatter={"float": "{: 6.2f}".format})
 
 
 # Instantiate the component and get its name.
-m = HeatBMI()
-print(m.get_component_name())
+m = HeatModelF()
+print(m.name)
 
 # Call setup, then initialize the model.
 args = m.setup(".")
@@ -43,16 +43,26 @@ grid_id = m.var[var_name].grid
 print(" - grid id:", grid_id)
 print(" - grid type:", m.grid_type(grid_id))
 print(" - rank:", m.grid_ndim(grid_id))
-print(" - size:", m.grid_node_count(grid_id))
+grid_size = m.grid_node_count(grid_id)
+print(" - size:", grid_size)
 print(" - shape:", m.grid_shape(grid_id))
 
 # Get the initial values of the variable.
 print("Get initial values of {}...".format(var_name))
-val = m.var[var_name].data
 print(" - values, flattened:")
-print(val)
+print(m.var[var_name].data)
 print(" - values, redimensionalized:")
-print(val.reshape(m.grid_shape(grid_id), order="F"))
+print(m.var[var_name].data.reshape(m.grid_shape(grid_id), order="F"))
+
+# Set new values.
+print("Set new values of {}...".format(var_name))
+new = np.zeros(grid_size, dtype=np.float32)
+new[20] = 10.0
+m.set_value(var_name, new)
+print(" - values, flattened:")
+print(m.var[var_name].data)
+print(" - values, redimensionalized:")
+print(m.var[var_name].data.reshape(m.grid_shape(grid_id), order="F"))
 
 # Advance the model by one time step.
 m.update()
@@ -62,20 +72,6 @@ print(m.var[var_name].data.reshape(m.grid_shape(grid_id), order="F"))
 
 # Advance the model until a later time.
 m.update_until(5.0)
-print("Update: current time:", m.time)
-print(" - values at time {}:".format(m.time))
-print(m.var[var_name].data.reshape(m.grid_shape(grid_id), order="F"))
-
-# Set new temperature values.
-print("Set new values for {}...".format(var_name))
-new = np.zeros_like(val)
-new[20] = 10.0
-m.set_value(var_name, new)
-print(" - new values:")
-print(m.var[var_name].data.reshape(m.grid_shape(grid_id), order="F"))
-
-# Advance the model by one time step.
-m.update()
 print("Update: current time:", m.time)
 print(" - values at time {}:".format(m.time))
 print(m.var[var_name].data.reshape(m.grid_shape(grid_id), order="F"))

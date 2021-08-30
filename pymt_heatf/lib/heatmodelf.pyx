@@ -122,14 +122,14 @@ cpdef to_string(bytes):
     except AttributeError:
         return bytes
 
-# start: heatbmi.pyx
+# start: heatmodelf.pyx
 
-cdef class HeatBMI:
+cdef class HeatModelF:
 
     cdef int _bmi
     cdef char[2048] STR_BUFFER
 
-    METADATA = "../data/HeatBMI"
+    METADATA = "../data/HeatModelF"
 
     def __cinit__(self):
         self._bmi = bmi_new()

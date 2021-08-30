@@ -2,7 +2,7 @@ import numpy as np
 import pymt
 
 
-m = pymt.MODELS.HeatBMI()
+m = pymt.MODELS.HeatModelF()
 
 args = m.setup(".")
 m.initialize(*args)

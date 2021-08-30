@@ -1,9 +1,10 @@
 [library]
-[library.HeatBMI]
+[library.HeatModelF]
 language = "fortran"
 library = "bmiheatf"
 header = ""
 entry_point = "bmi_heat"
+
 
 
 [build]
@@ -24,6 +25,7 @@ package_author = "csdms"
 package_author_email = "csdms@colorado.edu"
 package_license = "MIT"
 summary = "PyMT plugin for heatf model"
+
 
 
 [ci]

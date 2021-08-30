@@ -105,4 +105,4 @@ ENV/
 pymt_heatf/lib/bmi_interoperability.mod
 pymt_heatf/lib/bmi_interoperability.smod
 pymt_heatf/lib/bmi_interoperability.o
-pymt_heatf/lib/heatbmi.c
+pymt_heatf/lib/heatmodelf.c

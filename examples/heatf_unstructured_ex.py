@@ -1,13 +1,13 @@
 """An example of calling a Fortran BMI through Cython."""
 import numpy as np
-from pymt_heatf import HeatBMI
+from pymt_heatf import HeatModelF
 
 
 config_file = "test.cfg"
 
 
 # Instantiate a model and get its name.
-m = HeatBMI()
+m = HeatModelF()
 print(m.get_component_name())
 
 # Initialize the model.
