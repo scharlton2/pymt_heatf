@@ -5,6 +5,7 @@ Changelog for pymt_heatf
 ----------------
 
 - Rename component from HeatBMI to HeatModelF (#4)
+- Show total temperature in BMI example (#5)
 
 
 2.0 (2021-08-24)

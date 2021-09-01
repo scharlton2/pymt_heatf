@@ -57,6 +57,7 @@ print(" - initial values (flattened):")
 print(val)
 print(" - initial values (gridded):")
 print(val.reshape(grid_shape, order="F"))
+print(" -- total temperature:", val.sum())
 
 # Set new initial temperature values.
 new = np.zeros(grid_size, dtype=np.float32)
@@ -68,6 +69,7 @@ print(" - new initial values (flattened):")
 print(val)
 print(" - new initial values (gridded):")
 print(val.reshape(grid_shape, order="F"))
+print(" -- total temperature:", val.sum())
 
 # Advance the model by one time step.
 m.update()
@@ -76,23 +78,23 @@ val = np.empty(grid_size, dtype=np.float32)
 m.get_value(var_name, val)
 print(" - updated values (gridded):")
 print(val.reshape(grid_shape, order="F"))
+print(" -- total temperature:", val.sum())
 
-# # Get a reference to the temperature values and check that it updates.
-# print(" - values (by ref, gridded) at time {}:".format(m.get_current_time()))
-# ref = m.get_value_ptr(var_name)
-# print(ref.reshape(grid_shape, order="F"))
-# m.update()
-# print(" - values (by ref, gridded) at time {}:".format(m.get_current_time()))
-# print(ref.reshape(grid_shape, order="F"))
+# Get a reference to the temperature values and check that it updates.
+print(" - values (by ref, gridded) at time {}:".format(m.get_current_time()))
+ref = m.get_value_ptr(var_name)
+print(ref.reshape(grid_shape, order="F"))
+m.update()
+print(" - values (by ref, gridded) at time {}:".format(m.get_current_time()))
+print(ref.reshape(grid_shape, order="F"))
+print(" -- total temperature:", ref.sum())
 
 # Advance the model until a later time.
 m.update_until(5.0)
 print("Later time:", m.get_current_time())
-val = np.empty(grid_size, dtype=np.float32)
-m.get_value(var_name, val)
 print(" - updated values (gridded):")
-print(val.reshape(grid_shape, order="F"))
-# print(ref.reshape(grid_shape))
+print(ref.reshape(grid_shape, order="F"))
+print(" -- total temperature:", ref.sum())
 
 # Get the grid_id for the plate_surface__thermal_diffusivity variable.
 var_name = "plate_surface__thermal_diffusivity"
