@@ -1,5 +1,59 @@
 [build-system]
-requires = ["cython", "numpy", "setuptools", "wheel"]
+build-backend = 'mesonpy'
+requires = ['meson-python', 'cython']
+
+[project]
+name = "HeatModelF"
+description = "Solves the two-dimensional heat equation."
+version = "0.1"
+readme = "README.rst"
+authors = [
+  {email = "mark.piper@colorado.edu"},
+  {name = "Mark Piper"}
+]
+keywords = [
+  "bmi",
+  "csdms",
+  "diffusion",
+  "fortran",
+  "model",
+]
+license = {file = "LICENSE"}
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Cython",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Topic :: Scientific/Engineering :: Physics",
+]
+requires-python = ">=3.9"
+dependencies = [
+  "bmipy",
+  "numpy",
+]
+# dynamic = ["version"]
+
+[project.urls]
+homepage = "https://github.com/csdms"
+documentation = "https://github.com/csdms"
+repository = "https://github.com/mdpiper/pymt_heatf"
+changelog = "https://github.com/mdpiper/pymt_heatf/blob/main/CHANGES.rst"
+
+# [project.optional-dependencies]
+# dev = ["nox"]
+
+# [tool.setuptools.dynamic]
+# readme = {file = ["README.md", "AUTHORS.md", "CHANGES.md"], content_type="text/markdown"}
+# version = {attr = "bmi_wavewatch3._version.__version__"}
+
+
+
 
 [tool.pytest.ini_options]
 minversion = "5.0"
