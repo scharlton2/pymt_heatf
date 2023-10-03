@@ -1,14 +1,18 @@
-project('pymt_heatf', 'cython', 'fortran', version: '0.1')
+project('pymt_heatf', 'fortran', 'cython', version: '0.1')
 
 py = import('python').find_installation()
 
 # Specify directories to be included - usually this is where your header files live.
-# May be able to import bmi-fortran?
 # May need to go deeper, to pymt_heatf/lib?
 # What about CONDA_PREFIX env var? See old setup.py.
-# /Users/mpiper/anaconda3/envs/meson/lib
-# /Users/mpiper/anaconda3/envs/meson/include
-includes = include_directories('pymt_heatf')
+# /Users/mpiper/anaconda3/envs/mson/lib
+# /Users/mpiper/anaconda3/envs/mson/include
+inc_dirs = include_directories([
+    'pymt_heatf',
+    'pymt_heatf/lib',
+    '/Users/mpiper/anaconda3/envs/mson/include',
+    '/Users/mpiper/anaconda3/envs/mson/lib/python3.11/site-packages/numpy/core/include',
+    ])
 
 fc = meson.get_compiler('fortran')
 libbmif = fc.find_library('bmif')
@@ -37,8 +41,8 @@ py.extension_module(
 #        libheatf,
 #        libbmiheatf,
 #    ]
-    dependencies: libbmif,
+#    dependencies: libbmif,
     subdir: 'pymt_heatf',
-    include_directories: includes,
+    include_directories: inc_dirs,
     install: true,
 )
