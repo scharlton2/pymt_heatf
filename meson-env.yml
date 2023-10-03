@@ -1,0 +1,16 @@
+# An env for re/building a pymt-lab component with Meson.
+name: mson
+channels:
+  - conda-forge
+dependencies:
+  - python =3
+  - pip
+  - make
+  - cmake
+  - fortran-compiler
+  - cython
+  - c-compiler
+  - meson-python
+  - numpy
+  - ipython
+  - pymt
