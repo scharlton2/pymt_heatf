@@ -4,8 +4,8 @@ requires = ['meson-python', 'cython', 'numpy']
 
 [project]
 name = "pymt_heatf"
-description = "PyMT plugin for pymt_heatf"
-version = "2.1.dev0"
+description = "PyMT plugin for heatf model"
+version = "3.0.dev0"
 readme = "README.rst"
 authors = [
   {email = "mark.piper@colorado.edu"},
@@ -14,9 +14,9 @@ authors = [
 keywords = [
   "bmi",
   "csdms",
-  "diffusion",
   "fortran",
   "model",
+  "pymt",
 ]
 license = {file = "LICENSE"}
 classifiers = [
@@ -47,41 +47,3 @@ changelog = "https://github.com/mdpiper/pymt_heatf/blob/main/CHANGES.rst"
 
 # [project.optional-dependencies]
 # dev = ["nox"]
-
-# [tool.setuptools.dynamic]
-# readme = {file = ["README.md", "AUTHORS.md", "CHANGES.md"], content_type="text/markdown"}
-# version = {attr = "bmi_wavewatch3._version.__version__"}
-
-
-
-
-[tool.pytest.ini_options]
-minversion = "5.0"
-testpaths = ["pymt_heatf", "tests"]
-norecursedirs = [".*", "*.egg*", "build", "dist"]
-addopts = """
-    --ignore setup.py
-    --tb native
-    --strict
-    --durations 16
-    --doctest-modules
-    -vvv
-"""
-doctest_optionflags = [
-    "NORMALIZE_WHITESPACE",
-    "IGNORE_EXCEPTION_DETAIL",
-    "ALLOW_UNICODE"
-]
-
-[tool.isort]
-multi_line_output = 3
-include_trailing_comma = true
-force_grid_wrap = 0
-combine_as_imports = true
-line_length = 88
-
-[tool.check-manifest]
-ignore = [
-  "pymt_heatf/data",
-  "pymt_heatf/data/**/*",
-]
