@@ -47,3 +47,6 @@ changelog = "https://github.com/mdpiper/pymt_heatf/blob/main/CHANGES.rst"
 
 # [project.optional-dependencies]
 # dev = ["nox"]
+
+[project.entry-points."pymt.plugins"]
+HeatModelF = "pymt_heatf.bmi:HeatModelF"
