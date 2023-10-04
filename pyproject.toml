@@ -3,9 +3,9 @@ build-backend = 'mesonpy'
 requires = ['meson-python', 'cython', 'numpy']
 
 [project]
-name = "HeatModelF"
-description = "Solves the two-dimensional heat equation."
-version = "0.1"
+name = "pymt_heatf"
+description = "PyMT plugin for pymt_heatf"
+version = "2.1.dev0"
 readme = "README.rst"
 authors = [
   {email = "mark.piper@colorado.edu"},
