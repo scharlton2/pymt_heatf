@@ -3,11 +3,18 @@ project('pymt_heatf', 'fortran', 'cython')
 py = import('python').find_installation(pure: false)
 fc = meson.get_compiler('fortran')
 
+python_inc = py.get_path('data') / 'include'
+numpy_inc = run_command(py,
+    [
+        '-c',
+        'import numpy; print(numpy.get_include())'
+    ],
+    check: true
+).stdout().strip()
 incs = include_directories([
-    'pymt_heatf',
     'pymt_heatf/lib',
-    '/Users/mpiper/anaconda3/envs/mson/include',
-    '/Users/mpiper/anaconda3/envs/mson/lib/python3.11/site-packages/numpy/core/include',
+    python_inc,
+    numpy_inc,
     ])
 
 deps = [
@@ -22,12 +29,12 @@ srcs = [
 ]
 
 # Files get copied to <python directory>/site-packages/<subdir>
-install_bmi_srcs = [
+install_pkg_srcs = [
     'pymt_heatf/__init__.py',
     'pymt_heatf/bmi.py',
 ]
 py.install_sources(
-    install_bmi_srcs,
+    install_pkg_srcs,
     subdir: 'pymt_heatf',
 )
 install_lib_srcs = [
