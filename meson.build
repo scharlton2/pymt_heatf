@@ -53,3 +53,6 @@ py.extension_module(
     install: true,
     subdir: 'pymt_heatf/lib',
 )
+
+# This is a temporary fix for editable installs.
+run_command('cp', '-r', 'pymt_heatf/data', 'build')
