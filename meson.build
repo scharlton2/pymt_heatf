@@ -4,12 +4,21 @@ py = import('python').find_installation(pure: false)
 fc = meson.get_compiler('fortran')
 
 python_inc = py.get_path('data') / 'include'
-numpy_inc = py.get_path('platlib') / 'numpy/core/include'
-incs = include_directories([
-    'pymt_heatf/lib',
-    python_inc,
-    numpy_inc,
-    ])
+numpy_inc = run_command(
+    py,
+    [
+        '-c',
+        'import numpy; print(numpy.get_include())'
+    ],
+    check: true
+).stdout().strip()
+incs = include_directories(
+    [
+        'pymt_heatf/lib',
+        python_inc,
+        numpy_inc,
+    ]
+)
 
 deps = [
     fc.find_library('bmif'),
