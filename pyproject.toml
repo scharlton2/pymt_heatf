@@ -44,6 +44,11 @@ dev = [
   "ruff",
   "isort",
 ]
+build = [
+  "build",
+  "twine",
+  "zest.releaser"
+]
 
 [project.urls]
 homepage = "https://github.com/csdms"
