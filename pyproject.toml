@@ -5,7 +5,7 @@ requires = ['meson-python', 'cython', 'numpy']
 [project]
 name = "pymt_heatf"
 description = "PyMT plugin for heatf model"
-version = "3.0.dev0"
+version = "3.0.0.dev0"
 readme = "README.rst"
 authors = [
   {email = "mark.piper@colorado.edu"},
@@ -37,7 +37,6 @@ dependencies = [
   "bmipy",
   "numpy",
 ]
-# dynamic = ["version"]
 
 [project.urls]
 homepage = "https://github.com/csdms"
@@ -45,8 +44,8 @@ documentation = "https://github.com/csdms"
 repository = "https://github.com/mdpiper/pymt_heatf"
 changelog = "https://github.com/mdpiper/pymt_heatf/blob/main/CHANGES.rst"
 
-# [project.optional-dependencies]
-# dev = ["nox"]
-
 [project.entry-points."pymt.plugins"]
 HeatModelF = "pymt_heatf.bmi:HeatModelF"
+
+[tool.zest-releaser]
+tag-format = "v{version}"
