@@ -19,35 +19,22 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest]
-        python-version: [3.9]
+        os: [ubuntu-latest, macos-latest]
+        python-version: ["3.9", "3.10", "3.11"]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: true
 
-      - uses: conda-incubator/setup-miniconda@v2
+      - uses: mamba-org/setup-micromamba@v1
         with:
-          auto-update-conda: true
-          python-version: ${{ matrix.python-version }}
-          channels: conda-forge
-          channel-priority: true
+          micromamba-version: latest
+          environment-file: environment.yml
 
-      - name: Show conda installation info
+      - name: Build and install model
         run: |
-          conda info
-          conda list
-
-      - name: Install requirements
-        run: |
-          conda install mamba
-          mamba install --file=requirements-build.txt --file=requirements-library.txt
-          mamba list
-
-      - name: Make Fortran example
-        run: |
-          mkdir buildf && pushd buildf
+          mkdir build && pushd build
           cmake ../external/bmi-example-fortran -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX
           make install
           popd
@@ -56,18 +43,12 @@ jobs:
         run: |
           pip install -e .
 
-      - name: Install testing dependencies
-        run: mamba install --file=requirements-testing.txt
-
-      - name: Test
+      - name: Test BMI
         run: |
           python -c 'import pymt_heatf'
-          bmi-test pymt_heatf.bmi:HeatModelF -vvv
+          bmi-test pymt_heatf.bmi:HeatModelF --config-file=examples/test.cfg --root-dir=examples -vvv
 
-      - name: Install example dependencies
-        run: mamba install pymt
-
-      - name: Run examples
+       - name: Run examples
         working-directory: ${{ github.workspace }}/examples
         run: |
           python heatf_ex.py
