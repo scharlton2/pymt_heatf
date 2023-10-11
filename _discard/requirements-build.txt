@@ -1,3 +1,0 @@
-
-bmi-fortran
-fortran-compiler
