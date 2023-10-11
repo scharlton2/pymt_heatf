@@ -38,6 +38,13 @@ dependencies = [
   "numpy",
 ]
 
+[project.optional-dependencies]
+dev = [
+  "black",
+  "ruff",
+  "isort",
+]
+
 [project.urls]
 homepage = "https://github.com/csdms"
 documentation = "https://github.com/csdms"
@@ -46,6 +53,14 @@ changelog = "https://github.com/mdpiper/pymt_heatf/blob/main/CHANGES.rst"
 
 [project.entry-points."pymt.plugins"]
 HeatModelF = "pymt_heatf.bmi:HeatModelF"
+
+[tool.ruff]
+exclude = ["docs"]
+line-length = 88
+ignore = [
+	"E203",
+	"E501",
+]
 
 [tool.zest-releaser]
 tag-format = "v{version}"
