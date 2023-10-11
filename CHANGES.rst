@@ -1,7 +1,7 @@
 Changelog for pymt_heatf
 ========================
 
-2.1 (unreleased)
+3.0 (2023-10-11)
 ----------------
 
 - Use Meson for build system (#7)
