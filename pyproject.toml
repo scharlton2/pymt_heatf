@@ -1,33 +1,74 @@
 [build-system]
-requires = ["cython", "numpy", "setuptools", "wheel"]
+build-backend = 'mesonpy'
+requires = ['meson-python', 'cython', 'numpy']
 
-[tool.pytest.ini_options]
-minversion = "5.0"
-testpaths = ["pymt_heatf", "tests"]
-norecursedirs = [".*", "*.egg*", "build", "dist"]
-addopts = """
-    --ignore setup.py
-    --tb native
-    --strict
-    --durations 16
-    --doctest-modules
-    -vvv
-"""
-doctest_optionflags = [
-    "NORMALIZE_WHITESPACE",
-    "IGNORE_EXCEPTION_DETAIL",
-    "ALLOW_UNICODE"
+[project]
+name = "pymt_heatf"
+description = "PyMT plugin for heatf model"
+version = "3.0.0.dev0"
+readme = "README.rst"
+authors = [
+  {email = "mark.piper@colorado.edu"},
+  {name = "Mark Piper"}
+]
+keywords = [
+  "bmi",
+  "csdms",
+  "fortran",
+  "model",
+  "pymt",
+]
+license = {file = "LICENSE"}
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Cython",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Topic :: Scientific/Engineering :: Physics",
+]
+requires-python = ">=3.9"
+dependencies = [
+  "bmipy",
+  "numpy",
 ]
 
-[tool.isort]
-multi_line_output = 3
-include_trailing_comma = true
-force_grid_wrap = 0
-combine_as_imports = true
-line_length = 88
+[project.optional-dependencies]
+dev = [
+  "black",
+  "ruff",
+  "isort",
+]
+build = [
+  "build",
+  "twine",
+  "zest.releaser"
+]
 
-[tool.check-manifest]
+[project.urls]
+homepage = "https://github.com/csdms"
+documentation = "https://github.com/csdms"
+repository = "https://github.com/mdpiper/pymt_heatf"
+changelog = "https://github.com/mdpiper/pymt_heatf/blob/main/CHANGES.rst"
+
+[project.entry-points."pymt.plugins"]
+HeatModelF = "pymt_heatf.bmi:HeatModelF"
+
+[tool.ruff]
+exclude = ["docs"]
+line-length = 88
 ignore = [
-  "pymt_heatf/data",
-  "pymt_heatf/data/**/*",
+	"E203",
+	"E501",
 ]
+
+[tool.black]
+exclude = "docs"
+
+[tool.zest-releaser]
+tag-format = "v{version}"
