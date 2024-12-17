@@ -2,7 +2,8 @@
 
 ## 3.1 (unreleased)
 
-- Nothing changed yet.
+- Improve build and CI (#11)
+- Build project with pip (#9)
 
 ## 3.0 (2023-10-11)
 
