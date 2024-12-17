@@ -1,5 +1,11 @@
 # Changelog for pymt_heatf
 
+## 3.2 (unreleased)
+
+
+- Nothing changed yet.
+
+
 ## 3.1 (2024-12-17)
 
 - Improve build and CI (#11)
