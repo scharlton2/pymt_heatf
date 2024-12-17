@@ -1,5 +1,4 @@
-#! /usr/bin/env python
-from .bmi import HeatModelF
+from pymt_heatf._bmi import HeatModelF
 
 __all__ = [
     "HeatModelF",

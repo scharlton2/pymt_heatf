@@ -1,12 +1,12 @@
 [build-system]
-build-backend = 'mesonpy'
-requires = ['meson-python', 'cython', 'numpy']
+build-backend = "mesonpy"
+requires = ["meson-python", "cython", "numpy", "wheel"]
 
 [project]
 name = "pymt_heatf"
-description = "PyMT plugin for heatf model"
+description = "PyMT plugin for the HeatModelF model"
 version = "3.1.dev0"
-readme = "README.rst"
+readme = "README.md"
 authors = [
   {email = "mark.piper@colorado.edu"},
   {name = "Mark Piper"}
@@ -25,14 +25,14 @@ classifiers = [
   "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent",
   "Programming Language :: Cython",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: Implementation :: CPython",
   "Topic :: Scientific/Engineering :: Physics",
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 dependencies = [
   "bmipy",
   "numpy",
@@ -64,7 +64,7 @@ repository = "https://github.com/mdpiper/pymt_heatf"
 changelog = "https://github.com/mdpiper/pymt_heatf/blob/main/CHANGES.rst"
 
 [project.entry-points."pymt.plugins"]
-HeatModelF = "pymt_heatf.bmi:HeatModelF"
+HeatModelF = "pymt_heatf._bmi:HeatModelF"
 
 [tool.ruff]
 exclude = ["docs"]
@@ -73,9 +73,6 @@ ignore = [
 	"E203",
 	"E501",
 ]
-
-[tool.black]
-exclude = "docs"
 
 [tool.zest-releaser]
 tag-format = "v{version}"

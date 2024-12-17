@@ -1,7 +1,4 @@
-#! /usr/bin/env python
-
-from .heatmodelf import HeatModelF
-
+from pymt_heatf.lib.heatmodelf import HeatModelF
 
 __all__ = [
     "HeatModelF",

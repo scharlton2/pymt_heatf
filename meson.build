@@ -1,4 +1,9 @@
-project('pymt_heatf', 'fortran', 'cython')
+project(
+    'pymt_heatf',
+    'c', 'cython', 'fortran',
+    version: '3.1.dev0',
+    license: 'MIT',
+)
 
 py = import('python').find_installation(pure: false)
 fc = meson.get_compiler('fortran')
@@ -24,6 +29,7 @@ deps = [
     fc.find_library('bmif'),
     fc.find_library('heatf'),
     fc.find_library('bmiheatf'),
+    py.dependency(),
 ]
 
 srcs = [
@@ -34,7 +40,7 @@ srcs = [
 # Files get copied to <python directory>/site-packages/<subdir>
 install_pkg_srcs = [
     'pymt_heatf/__init__.py',
-    'pymt_heatf/bmi.py',
+    'pymt_heatf/_bmi.py',
 ]
 py.install_sources(
     install_pkg_srcs,
@@ -64,4 +70,4 @@ py.extension_module(
 )
 
 # This is a temporary fix for editable installs.
-run_command('cp', '-r', 'pymt_heatf/data', 'build')
+run_command('cp', '-r', 'pymt_heatf/data', 'build', check: false)
