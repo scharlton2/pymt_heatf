@@ -2,9 +2,7 @@
 
 ## 3.2 (unreleased)
 
-
-- Nothing changed yet.
-
+- Build on Windows (#12)
 
 ## 3.1 (2024-12-17)
 
