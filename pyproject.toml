@@ -5,7 +5,7 @@ requires = ["meson-python", "cython", "numpy", "wheel"]
 [project]
 name = "pymt_heatf"
 description = "PyMT plugin for the HeatModelF model"
-version = "3.2.dev0"
+version = "3.2"
 readme = "README.md"
 authors = [
   {email = "mark.piper@colorado.edu"},
