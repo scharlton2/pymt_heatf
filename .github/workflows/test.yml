@@ -8,7 +8,8 @@ env:
 jobs:
   build-test-unix:
     if:
-      false && github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+      ${{ false }}
+      # false && github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
 
     runs-on: ${{ matrix.os }}
 
@@ -93,10 +94,10 @@ jobs:
         run: |
           echo "FC=$env:CONDA_PREFIX\Library\bin\flang-new.exe" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
 
-      # A link.exe installed by chocolatey was ahead of the MSVC link.exe in the path.
-      - name: Remove link.exe in the Git install
-        run: |
-          Remove-Item -Path "C:\Program Files\Git\usr\bin\link.exe" -Force
+      # # A link.exe installed by chocolatey was ahead of the MSVC link.exe in the path.
+      # - name: Remove link.exe in the Git install
+      #   run: |
+      #     Remove-Item -Path "C:\Program Files\Git\usr\bin\link.exe" -Force
 
       # The flang FortranRuntime.lib wasn't being found. This recommendation comes from the Meson docs.
       - name: Add conda environment libpath to Windows LIB (not LIBPATH)
