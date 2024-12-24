@@ -121,7 +121,7 @@ jobs:
           get-command -All find
           which --all rm
           which --all find
-          ls -al C:\mingw64\bin
+          Get-ChildItem C:\mingw64\bin
           make install
 
       - name: Test imports
