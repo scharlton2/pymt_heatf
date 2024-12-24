@@ -117,10 +117,10 @@ jobs:
 
       - name: Build and install package
         run: |
-          get-command rm
-          get-command find
-          which rm
-          which find
+          get-command -All rm
+          get-command -All find
+          which --all rm
+          which --all find
           make install
 
       - name: Test imports
