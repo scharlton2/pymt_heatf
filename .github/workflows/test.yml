@@ -118,6 +118,8 @@ jobs:
 
       - name: Build and install package
         run: |
+          Write-Output "Host.Name = $($Host.Name)"
+          Write-Output $env:Path
           get-command -All link
           which --all link
           get-command -All rm
