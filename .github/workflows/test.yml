@@ -118,6 +118,8 @@ jobs:
 
       - name: Build and install package
         run: |
+          get-command -All link
+          which --all link
           get-command -All rm
           get-command -All find
           which --all rm
