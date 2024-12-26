@@ -72,6 +72,7 @@ jobs:
         shell: pwsh
 
     strategy:
+      fail-fast: false
       matrix:
         os: [windows-2019, windows-2022]
     
@@ -118,6 +119,7 @@ jobs:
 
       - name: Build and install package
         run: |
+          cat $HOME\Documents\PowerShell\Profile.ps1
           Write-Output "Host.Name = $($Host.Name)"
           Write-Output $env:Path
           get-command -All link
