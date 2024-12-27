@@ -121,20 +121,21 @@ jobs:
         run: |
           rm C:\mingw64\bin\ar.exe
           rm C:\Strawberry\c\bin\ar.exe
+          $env:AR="$env:CONDA_PREFIX\Library\bin\llvm-lib.exe"
           # get-command -All ar
           # which --all ar
           # get-command -All gar
           # which --all gar
-          cat $HOME\Documents\PowerShell\Profile.ps1
-          Write-Output "Host.Name = $($Host.Name)"
-          Write-Output $env:Path
-          get-command -All link
-          which --all link
-          get-command -All rm
-          get-command -All find
-          which --all rm
-          which --all find
-          Get-ChildItem C:\mingw64\bin
+          # cat $HOME\Documents\PowerShell\Profile.ps1
+          # Write-Output "Host.Name = $($Host.Name)"
+          # Write-Output $env:Path
+          # get-command -All link
+          # which --all link
+          # get-command -All rm
+          # get-command -All find
+          # which --all rm
+          # which --all find
+          # Get-ChildItem C:\mingw64\bin
           make install
 
       - name: Test imports
